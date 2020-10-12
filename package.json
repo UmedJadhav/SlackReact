@@ -6,9 +6,22 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "emoji-mart": "^3.0.0",
+    "firebase": "^7.23.0",
+    "md5": "^2.3.0",
+    "mime-types": "^2.1.27",
+    "moment": "^2.29.1",
     "react": "^16.13.1",
+    "react-avatar-editor": "^11.0.10",
+    "react-color": "^2.18.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3"
+    "react-redux": "^7.2.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.3",
+    "redux": "^4.0.5",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.0",
+    "uuid": "^8.3.1"
   },
   "scripts": {
     "start": "react-scripts start",
