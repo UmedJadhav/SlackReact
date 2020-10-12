@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App/App';
 import { BrowserRouter as Router , Switch , Route } from 'react-router-dom';
+import 'semantic-ui-css/semantic.min.css';
 
 import Login from './components/Auth/Login.component';
 import Register from './components/Auth/Register.component';
