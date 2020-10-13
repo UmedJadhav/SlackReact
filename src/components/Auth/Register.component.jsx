@@ -12,6 +12,7 @@ class Register extends Component {
         password: '',
         passwordConfirmation: '',
         errors: [],
+        loading: false,
         usersRef: firebase.database().ref('users')
     };
 
@@ -106,6 +107,7 @@ class Register extends Component {
                 <Grid.Column style={{ maxWidth:450 }}>
                     <Header as='h2' icon color='orange' textAlign='center'>
                         <Icon name='puzzle piece' color='orange'/>
+                        Register to ReactSlack
                     </Header>
                         {
                             errors.length > 0 && (<Message error>
