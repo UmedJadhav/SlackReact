@@ -24,6 +24,11 @@ export default class MessageForm extends Component {
         });
     }
 
+    uploadFile = (file, metaData) => {
+        console.log( file, metaData);
+
+    }
+
     sendMessage = () => {
         const { messagesRef } = this.props;
         const { message, channel, errors } = this.state;
@@ -75,7 +80,7 @@ export default class MessageForm extends Component {
                     onClick={ this.sendMessage }/>
                     <Button color='teal' content='Upload Media' labelPosition='right' icon='cloud upload' 
                     onClick={ this.openModal }/>
-                    <FileModal modal ={modal} closeModal={ this.closeModal }/>
+                    <FileModal modal ={modal} closeModal={ this.closeModal }  uploadFile={ this.uploadFile }/>
                 </Button.Group>
             
             </Segment>
