@@ -5,7 +5,7 @@ import firebase from '../../firebase';
 export default class MessageForm extends Component {
     state = {
         message: '',
-        loading: true,
+        loading: false,
         channel: this.props.currentChannel,
         user: this.props.currentUser,
         errors: []
@@ -56,15 +56,15 @@ export default class MessageForm extends Component {
     }
 
     render() {
-        const { errors } = this.state;
+        const { errors, message, loading } = this.state;
         return (
             <Segment class='message__form'>
-                <Input fluid name='message' style= {{ marginBottom:'0.7em' }} 
+                <Input fluid name='message' style= {{ marginBottom:'0.7em' }}  value={ message }
                 label={<Button icon={'add'} />} labelPosition='left' placeholder='Write your Message'
                 onChange={this.handleChange} className={ errors.some(err => err['message'].includes('message')) ? 'error' : ''}
                 />
                 <Button.Group icon widths='2'>
-                    <Button color='orange' content='Add Reply' labelPosition='left' icon='edit'
+                    <Button color='orange' content='Add Reply' labelPosition='left' icon='edit' disabled={ loading }
                     onClick={ this.sendMessage }/>
                     <Button color='teal' content='Upload Media' labelPosition='right' icon='cloud upload'/>
                 </Button.Group>
