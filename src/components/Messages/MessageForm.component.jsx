@@ -135,7 +135,7 @@ export default class MessageForm extends Component {
                 <Button.Group icon widths='2'>
                     <Button color='orange' content='Add Reply' labelPosition='left' icon='edit' disabled={ loading }
                     onClick={ this.sendMessage }/>
-                    <Button color='teal' content='Upload Media' labelPosition='right' icon='cloud upload' 
+                    <Button color='teal' content='Upload Media' labelPosition='right' icon='cloud upload'  disabled={ uploadState == 'uploading'}
                     onClick={ this.openModal }/>
                 </Button.Group>
                 <FileModal modal ={modal} closeModal={ this.closeModal }  uploadFile={ this.uploadFile }/>

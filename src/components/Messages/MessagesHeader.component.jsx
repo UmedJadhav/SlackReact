@@ -3,15 +3,16 @@ import { Header, Segment, Input, Icon } from 'semantic-ui-react';
 
 export default class MessagesHeader extends Component {
     render() {
+        const { channelName , numUniqueUsers } = this.props;
         return (
             <Segment clearing>
                 <Header fluid='true' as='h2' floated='left' styled={{ marginBottom: 0 }}>
                     <span>
-                        Channel
-                        <Icon name={'star outline'} color='black'/>
+                        { channelName }
+                        <Icon name={'star outline'} size='small' color='black'/>
                     </span>
                     <Header.Subheader>
-                        2 Users
+                        { numUniqueUsers }
                     </Header.Subheader>
                 </Header>
 
