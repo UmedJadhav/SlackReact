@@ -47,10 +47,10 @@ export default class FileModal extends Component {
                 </Modal.Content>
                 <Modal.Actions>
                     <Button color='green' inverted onClick={this.sendFile }>
-                        <Icon name='checkmark' /> Send
+                        <Icon name={'checkmark'} /> Send
                     </Button>
                     <Button color='red' inverted onClick={ closeModal }>
-                        <Icon name='Remove' /> Cancel
+                        <Icon name={'remove'} /> Cancel
                     </Button>
                 </Modal.Actions>
             </Modal>
