@@ -5,9 +5,28 @@ body,
     background-color: #eee;
     padding: 1em;
 }
+/* 
+.messages__container{
+    display: flex;
+    flex-direction: column;
+} */
+
+/* .messages__header{
+    flex-grow: 1;
+    position: sticky !important;
+} */
+
+/* .messages__footer{
+    flex-grow: 1;
+} */
 
 .messages{
-    height: 440px;
+    height: 69vh;
+    overflow-y: scroll;
+}
+
+.message__progress{
+    height: 65vh;
     overflow-y: scroll;
 }
 
@@ -27,4 +46,8 @@ body,
 
 .message__image{
     padding: 1em;
+}
+
+.progress__bar{
+    margin: 0.3em 0 0 !important;
 }

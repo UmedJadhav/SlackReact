@@ -12,7 +12,8 @@ export default class Messages extends Component {
         channel: this.props.currentChannel,
         user: this.props.currentUser,
         messages: [],
-        messagesLoading: true
+        messagesLoading: true,
+        progressBar : false
     }
 
     componentDidMount() {
@@ -43,14 +44,21 @@ export default class Messages extends Component {
         ))
     );
 
+    isProgressBarVisible = percent => {
+        if(percent > 0 ){
+            this.setState({ progressBar: true});
+        }
+    }
+
     render() {
-        const { messagesRef, channel, user, messages } = this.state;
+        const { messagesRef, channel, user, messages, progressBar } = this.state;
 
         return (
             <React.Fragment>
-                <MessagesHeader />
+            <div className='messages__container'>
+                <MessagesHeader className='messages__header' />
                 <Segment>
-                    <Comment.Group className='messages'>
+                    <Comment.Group className={ progressBar ? 'messages__progress': 'messages'}>
                         {
                             this.displayMessages(messages)
                         }
@@ -58,8 +66,9 @@ export default class Messages extends Component {
                 </Segment>
 
                 <MessageForm 
-                    messagesRef={ messagesRef } currentChannel = {channel} currentUser={user}
-                />
+                    messagesRef={ messagesRef } currentChannel = {channel} currentUser={user} className='messages__form' isProgressBarVisible={this.isProgressBarVisible}
+                    />
+            </div>
             </React.Fragment>
         )
     }
