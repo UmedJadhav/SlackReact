@@ -17,7 +17,9 @@ export default class MessageForm extends Component {
         uploadState: '',
         uploadTask: undefined,
         storageRef: firebase.storage().ref(),
-        percentUploaded: 0
+        percentUploaded: 0,
+        isPrivateChannel: this.props.isPrivateChannel,
+        getMessagesRef: this.props.getMessagesRef
     }
 
     openModal = () => this.setState({ modal: true });
@@ -30,10 +32,12 @@ export default class MessageForm extends Component {
         });
     }
 
+    getPath = () => this.state.isPrivateChannel ? `chat/private-${this.state.channel.id}`:'chat/public'
+
     uploadFile = (file, metaData) => {
         const pathtoUpload = this.state.channel.id;
-        const ref = this.props.messagesRef;
-        const filePath = `chat/public/${uuidv4()}.jpg`;
+        const ref = this.state.getMessagesRef();
+        const filePath = `${this.getPath()}/${uuidv4()}.jpg`;
 
         this.setState({
             uploadState: 'uploading',
@@ -82,12 +86,12 @@ export default class MessageForm extends Component {
     }
 
     sendMessage = () => {
-        const { messagesRef } = this.props;
+        const { getMessagesRef } = this.props;
         const { message, channel, errors } = this.state;
 
         if(message){
             this.setState({ loading: true });
-            messagesRef.child( channel.id ).push()
+            getMessagesRef().child( channel.id ).push()
             .set( this.createMessage())
             .then(() => {
                 this.setState({ loading:false, message: '' , errors: []})

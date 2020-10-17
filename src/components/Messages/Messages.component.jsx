@@ -17,7 +17,9 @@ export default class Messages extends Component {
         numUniqueUsers : '',
         searchTerm: '',
         searchLoading: false,
-        searchResults: []
+        searchResults: [],
+        isPrivateChannel: this.props.isPrivateChannel,
+        privateMessagesRef: firebase.database().ref('privateMessages')
     }
 
     componentDidMount() {
@@ -33,7 +35,8 @@ export default class Messages extends Component {
 
     addMessageListener = channelID => {
         let loaded_messages = [];
-        this.state.messagesRef.child(channelID).on('child_added', snap => {
+        const ref = this.getMessagesRef();
+        ref.child(channelID).on('child_added', snap => {
             loaded_messages.push(snap.val());
             this.setState({
                 messages: loaded_messages,
@@ -41,6 +44,11 @@ export default class Messages extends Component {
             })
         this.countUniqueUsers(loaded_messages);
         });
+    }
+
+    getMessagesRef = () => {
+        const { messagesRef, privateMessagesRef, isPrivateChannel } = this.state;
+        return isPrivateChannel ? privateMessagesRef : messagesRef ;
     }
 
     handleSearchChange = event => {
@@ -87,15 +95,15 @@ export default class Messages extends Component {
         }
     }
 
-    displayChannelName = channel => channel ? `#${channel.name}` : ''
+    displayChannelName = channel => channel ? `#${this.state.isPrivateChannel ? '@' : '#'}${channel.name}` : ''
 
     render() {
-        const { messagesRef, channel, user, messages, progressBar, numUniqueUsers, searchTerm, searchResults , searchLoading } = this.state;
+        const { messagesRef, channel, user, messages, progressBar, numUniqueUsers, searchTerm, searchResults , searchLoading, isPrivateChannel } = this.state;
 
         return (
             <React.Fragment>
             <div className='messages__container'>
-                <MessagesHeader className='messages__header' channelName={ this.displayChannelName(channel) } numUniqueUsers={ numUniqueUsers } handleSearchChange={ this.handleSearchChange } searchLoading={ searchLoading }/>
+                <MessagesHeader className='messages__header' channelName={ this.displayChannelName(channel) } numUniqueUsers={ numUniqueUsers } handleSearchChange={ this.handleSearchChange } searchLoading={ searchLoading } isPrivateChannel={isPrivateChannel} />
                 <Segment>
                     <Comment.Group className={ progressBar ? 'messages__progress': 'messages'}>
                         {
@@ -106,7 +114,7 @@ export default class Messages extends Component {
 
                 <MessageForm 
                     messagesRef={ messagesRef } currentChannel = {channel} currentUser={user} className='messages__form' isProgressBarVisible={this.isProgressBarVisible}
-                    />
+                    isPrivateChannel={isPrivateChannel} getMessagesRef={ this.getMessagesRef } />
             </div>
             </React.Fragment>
         )
