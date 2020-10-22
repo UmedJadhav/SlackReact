@@ -138,7 +138,7 @@ export default class Messages extends Component {
         }
     }
 
-    displayChannelName = channel => channel ? `#${this.state.isPrivateChannel ? '@' : '#'}${channel.name}` : ''
+    displayChannelName = channel => channel ? `${this.state.isPrivateChannel ? '@' : '#'}${channel.name}` : ''
 
     render() {
         const { messagesRef, channel, user, messages, progressBar, numUniqueUsers, searchTerm, searchResults , searchLoading, isPrivateChannel, isChannelStarred } = this.state;
