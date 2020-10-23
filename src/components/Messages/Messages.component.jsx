@@ -52,7 +52,8 @@ export default class Messages extends Component {
     addUsersStarsListeners = (channelID, userId)  => {
         this.state.usersRef.child(userId).child('starred')
         .once('value').then( data => {
-            if(data.val !== null){
+            console.log(data)
+            if(data.val() !== null){
                 const channelIds = Object.keys(data.val());
                 const prevStarred = channelIds.includes(channelID);
                 this.setState({ isChannelStarred: prevStarred });
