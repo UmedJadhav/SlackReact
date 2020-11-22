@@ -33,7 +33,7 @@ class UserPanel extends Component {
 
         const { user } = this.state
         return (
-            <Grid style={{ background: '#4c3c43'}}>
+            <Grid style={{ background: this.props.primaryColor}}>
                 <Grid.Column>
                     <Grid.Row style={{ padding: '1.2em' , margin: '0' }}>
                         <Header inverted floated='left' as='h2' >
