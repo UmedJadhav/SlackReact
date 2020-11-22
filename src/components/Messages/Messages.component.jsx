@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { Segment, Comment }  from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { setUserPosts } from '../../actions/actions'; 
 import MessagesHeader from './MessagesHeader.component';
 import MessageForm from './MessageForm.component';
 import Message from './Message.component';
 
 import firebase from '../../firebase';
-
-export default class Messages extends Component {
+class Messages extends Component {
     state = {
         messagesRef: firebase.database().ref('messages'),
         channel: this.props.currentChannel,
@@ -46,6 +47,7 @@ export default class Messages extends Component {
                 messagesLoading: false
             })
         this.countUniqueUsers(loaded_messages);
+        this.countUserPosts(loaded_messages);
         });
     }
 
@@ -127,6 +129,21 @@ export default class Messages extends Component {
         this.setState({ numUniqueUsers });
     }
 
+    countUserPosts = messages => {
+        let userPosts = messages.reduce((acc, message) => {
+            if(message.user.name in acc){
+                acc[message.user.name].count += 1;
+            }else{
+                acc[message.user.name] = {
+                    avatar: message.user.avatar,
+                    count: 1
+                }
+            }
+            return acc;
+        },{});
+        this.props.setUserPosts(userPosts);
+    }
+
     displayMessages = messages => (
         messages.length > 0 && messages.map(msg => (
             <Message key={ messages.timestamp } message={msg} user={this.state.user} />
@@ -164,3 +181,6 @@ export default class Messages extends Component {
         )
     }
 }
+
+
+export default connect(null, { setUserPosts })(Messages);
