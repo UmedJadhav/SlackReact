@@ -6,6 +6,7 @@ import MessagesHeader from './MessagesHeader.component';
 import MessageForm from './MessageForm.component';
 import Message from './Message.component';
 import { Typing } from './Typing';
+import { Skeleton } from './Skeleton.component';
 
 import firebase from '../../firebase';
 class Messages extends Component {
@@ -216,8 +217,19 @@ class Messages extends Component {
         ))
     )
 
+    displayMessagesSkeleton = msgLoading => (
+        msgLoading ? (
+            <React.Fragment>
+                {[...Array(10)].map((_, i) => (
+                    <Skeleton key={i} />
+                ))}
+            </React.Fragment>
+        ) : null
+    )
+
     render() {
-        const { messagesRef, channel, user, messages, progressBar, numUniqueUsers, searchTerm, searchResults, searchLoading, isPrivateChannel, isChannelStarred, typingUsers } = this.state;
+        const { messagesRef, channel, user, messages, progressBar, numUniqueUsers, searchTerm,
+            searchResults, searchLoading, isPrivateChannel, isChannelStarred, typingUsers, messagesLoading } = this.state;
 
         return (
             <React.Fragment>
@@ -225,6 +237,10 @@ class Messages extends Component {
                     <MessagesHeader className='messages__header' channelName={this.displayChannelName(channel)} numUniqueUsers={numUniqueUsers} handleSearchChange={this.handleSearchChange} searchLoading={searchLoading} isPrivateChannel={isPrivateChannel} handleStar={this.handleStar} isChannelStarred={isChannelStarred} />
                     <Segment >
                         <Comment.Group className={progressBar ? 'messages__progress' : 'messages'}>
+                            {
+                                this.displayMessagesSkeleton(messagesLoading)
+                            }
+
                             {
                                 searchTerm ? this.displayMessages(searchResults) : this.displayMessages(messages)
                             }
