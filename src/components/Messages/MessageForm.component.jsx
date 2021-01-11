@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Segment, Button, Input } from 'semantic-ui-react';
 import firebase from '../../firebase';
 import uuidv4 from 'uuid/dist/v4';
+import { Picker, emojiIndex } from 'emoji-mart';
+import 'emoji-mart/css/emoji-mart.css';
 
 import FileModal from './FileModal.component';
 import Progressbar from './Progressbar.component';
@@ -20,7 +22,8 @@ export default class MessageForm extends Component {
         percentUploaded: 0,
         isPrivateChannel: this.props.isPrivateChannel,
         getMessagesRef: this.props.getMessagesRef,
-        typingRef: firebase.database().ref('typing')
+        typingRef: firebase.database().ref('typing'),
+        emojiPicker: false
     }
 
     openModal = () => this.setState({ modal: true });
@@ -145,14 +148,46 @@ export default class MessageForm extends Component {
         }
     }
 
+    handleTogglePicker = () => {
+        this.setState({ emojiPicker: !this.state.emojiPicker })
+    }
+
+    handleAddEmoji = (emoji) => {
+        const oldMessage = this.state.message;
+        const newMessage = this.colonToUnicode(`${oldMessage} ${emoji.colons}`);
+        this.setState({ message: newMessage, emojiPicker: false });
+        setTimeout(() => this.messageInputRef.focus(), 0);
+    }
+
+    colonToUnicode = message => {
+        return message.replace(/:[A-Za-z0-9_+-]+ :/g, x => {
+            x = x.replace(/:/g, "");
+            let emoji = emojiIndex.emojis[x];
+            if (typeof emoji !== 'undefined') {
+                let unicode = emoji.native;
+                if (typeof unicode !== 'undefined') {
+                    return unicode;
+                }
+            }
+            x = ":" + x + ":";
+            return x;
+        });
+    };
+
     render() {
-        const { errors, message, loading, modal, uploadState, percentUploaded } = this.state;
+        const { errors, message, loading, modal, uploadState, percentUploaded, emojiPicker } = this.state;
         return (
             <Segment className='message__form'>
+                { emojiPicker && (
+                    <Picker set='apple' className='emojipicker'
+                        title="Pick your Emoji" emoji='point_up'
+                        onSelect={this.handleAddEmoji} />
+                )}
                 <Input fluid name='message' style={{ marginBottom: '0.7em' }} value={message}
-                    label={<Button icon={'add'} />} labelPosition='left' placeholder='Write your Message'
-                    onKeyDown={this.handleKeyDown}
+                    label={<Button icon={emojiPicker ? 'close' : 'add'} onClick={this.handleTogglePicker} content={emojiPicker ? 'Close' : null} />} labelPosition='left' placeholder='Write your Message'
+                    onKeyDown={this.handleKeyDown} ref={node => this.messageInputRef = node}
                     onChange={this.handleChange} className={errors.some(err => err['message'].includes('message')) ? 'error' : ''}
+
                 />
                 <Button.Group icon widths='2'>
                     <Button color='orange' content='Add Reply' labelPosition='left' icon='edit' disabled={loading}
