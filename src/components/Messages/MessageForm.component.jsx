@@ -17,13 +17,23 @@ export default class MessageForm extends Component {
         errors: [],
         modal: false,
         uploadState: '',
-        uploadTask: undefined,
+        uploadTask: null,
         storageRef: firebase.storage().ref(),
         percentUploaded: 0,
         isPrivateChannel: this.props.isPrivateChannel,
         getMessagesRef: this.props.getMessagesRef,
         typingRef: firebase.database().ref('typing'),
         emojiPicker: false
+    }
+
+    componentWillUnmount() {
+        console.log(this.state.uploadTask);
+        if (this.state.uploadTask !== null) {
+            this.state.uploadTask.cancel();
+            this.setState({
+                uploadState: null
+            });
+        }
     }
 
     openModal = () => this.setState({ modal: true });

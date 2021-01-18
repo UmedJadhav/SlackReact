@@ -29,6 +29,8 @@ class Channels extends Component {
         this.removeListeners();
     }
 
+
+
     addListeners = () => {
         let loadedChannels = [];
         this.state.ChannelsRef.on('child_added', snap => {
@@ -73,6 +75,9 @@ class Channels extends Component {
 
     removeListeners = () => {
         this.state.ChannelsRef.off();
+        this.state.channels.forEach(channel => {
+            this.state.messagesRef.child(channel.id).off();
+        });
     }
 
     setFirstChannel = () => {
@@ -127,7 +132,7 @@ class Channels extends Component {
     changeChannel = channel => {
         this.setActiveChannel(channel);
         this.state.typingRef.child(this.state.channel.id)
-            .child(this.state.currentUser .uid)
+            .child(this.state.currentUser.uid)
             .remove();
         this.clearNotifications();
         this.props.setCurrentChannel(channel);
