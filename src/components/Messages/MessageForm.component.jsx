@@ -46,7 +46,7 @@ export default class MessageForm extends Component {
         });
     }
 
-    getPath = () => this.state.isPrivateChannel ? `chat/private-${this.state.channel.id}` : 'chat/public'
+    getPath = () => this.state.isPrivateChannel ? `chat/private/${this.state.channel.id}` : 'chat/public'
 
     uploadFile = (file, metaData) => {
         const pathtoUpload = this.state.channel.id;
